@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: adminserver
+  profiles:
+    active: secure
+  security:
+    user:
+      name: "user"
+      password:  "password"
+
+
+
+# tag::configuration-eureka[]
+eureka:   #<1>
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+# end::configuration-eureka[]
+
+
+server:
+  port: 8788
+
+
+
+
+
